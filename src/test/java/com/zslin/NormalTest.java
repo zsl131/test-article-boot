@@ -2,6 +2,7 @@ package com.zslin;
 
 import com.zslin.dao.IArticleDao;
 import com.zslin.model.Article;
+import com.zslin.tools.JsonTools;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,14 @@ public class NormalTest {
 
     @Autowired
     private IArticleDao articleDao;
+
+    @Test
+    public void test07() {
+        String str = "{'username':'zsl', 'password': '123'}";
+        String name = JsonTools.getField(str, "username");
+        String pwd = JsonTools.getField(str, "password");
+        System.out.println("username:::"+name+", password::"+pwd);
+    }
 
     @Test
     public void test01() {
