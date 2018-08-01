@@ -19,6 +19,21 @@ public class UserService {
     @Autowired
     private IUserDao userDao;
 
+    public JsonObj loadOne(String params) {
+        Integer id = Integer.parseInt(JsonTools.getField(params, "id"));
+        User u = userDao.findOne(id);
+        if(u==null) {
+            return new JsonObj(0, "用户不存在");
+        }
+        return new JsonObj(1, u);
+    }
+
+    public JsonObj delete(String params) {
+        Integer id = Integer.parseInt(JsonTools.getField(params, "id"));
+        userDao.delete(id);
+        return new JsonObj(1, "删除成功");
+    }
+
     public JsonObj login(String params) {
         String username = JsonTools.getField(params, "username");
         String password = JsonTools.getField(params, "password");
