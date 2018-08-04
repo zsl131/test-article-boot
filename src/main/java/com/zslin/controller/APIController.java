@@ -1,6 +1,7 @@
 package com.zslin.controller;
 
 import com.zslin.dto.JsonObj;
+import com.zslin.dto.JsonResult;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -38,6 +39,24 @@ public class APIController {
         } catch (Exception e) {
             e.printStackTrace();
             return new JsonObj(0, "出错了");
+        }
+    }
+
+    @GetMapping(value = "baseRequest")
+    public JsonResult baseRequest(HttpServletRequest request, String params, HttpServletResponse response) {
+        System.out.println(request.getHeader("api-code"));
+        String apiCode = request.getHeader("api-code");
+        try {
+            String [] array = apiCode.split("\\.");
+            String serviceName = array[0];
+            String methodName = array[1];
+            Object obj = factory.getBean(serviceName);
+            Method method = obj.getClass().getMethod(methodName, params.getClass());
+            JsonResult result = (JsonResult) method.invoke(obj, params);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return JsonResult.error(e.getMessage());
         }
     }
 
