@@ -8,7 +8,7 @@ import javax.persistence.*;
  * Created by zsl on 2018/8/4.
  */
 @Entity
-@Table(name = "t_message")
+@Table(name = "t_message02")
 @JsonInclude(value= JsonInclude.Include.NON_NULL)
 public class Messages {
 
