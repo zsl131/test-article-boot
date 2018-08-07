@@ -2,8 +2,10 @@ package com.zslin.service;
 
 
 import com.alibaba.fastjson.JSON;
+import com.zslin.dao.ILeaveDao;
 import com.zslin.dao.IVerifyDao;
 import com.zslin.dto.JsonResult;
+import com.zslin.model.Leave;
 import com.zslin.model.Verify;
 import com.zslin.tools.DateTools;
 import com.zslin.tools.JsonTools;
@@ -16,6 +18,10 @@ import java.util.List;
 public class VerifyService {
     @Autowired
     private IVerifyDao verifyDao;
+
+    @Autowired
+    private ILeaveDao leaveDao;
+
     public JsonResult list(String params) {
         try {
             Integer lid = Integer.parseInt(JsonTools.getField(params,"lid"));
@@ -27,6 +33,7 @@ public class VerifyService {
         }
     }
     public JsonResult addOrUpdate(String params) {
+        System.out.println(params);
         Verify r = JSON.toJavaObject(JSON.parseObject(params),Verify.class);
         if(r.getId()!=null && r.getId()>0) {
             Verify ver = verifyDao.findOne(r.getId());
@@ -36,6 +43,8 @@ public class VerifyService {
             return JsonResult.success("修改成功");
         } else {
             r.setTime(DateTools.curTime());
+//            Integer leaveId = Integer.parseInt(JsonTools.getField(params, "leaveId"));
+//            Leave leave = leaveDao.findOne(leaveId);
             verifyDao.save(r);
             return JsonResult.success("保存成功");
         }

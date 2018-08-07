@@ -37,6 +37,7 @@ public class MessagesService {
             Messages old = messagesDao.findOne(m.getId());
             old.setAuthor(m.getAuthor());
             old.setContent(m.getContent());
+            messagesDao.save(old);
             return JsonResult.success("修改成功");
         } else {
             m.setCreateTime(DateTools.curTime());
@@ -48,12 +49,13 @@ public class MessagesService {
     public JsonResult delete(String params) {
         try {
             Integer id = Integer.parseInt(JsonTools.getField(params, "id"));
-            messagesDao.delete(id);
+//            messagesDao.delete(id);
 
             List<Reply> replyList = replyDao.findByMessageId(id);
             if(replyList!=null && replyList.size()>0) {
                 return JsonResult.success("存在回复，不能删除");
             } else {
+                messagesDao.delete(id);
                 return JsonResult.success("删除成功");
             }
         } catch (Exception e) {

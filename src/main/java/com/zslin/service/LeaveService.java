@@ -22,7 +22,8 @@ public class LeaveService {
     private IVerifyDao verifyDao;
     public JsonResult list(String params) {
         List<Leave> list = leaveDao.findAll();
-        return JsonResult.getInstance().set("size",list.size()).set("datas",list);
+        List<Verify> verifyList = verifyDao.findAll();
+        return JsonResult.getInstance().set("size",list.size()).set("datas",list).set("verifySize", verifyList.size()).set("verifyList", verifyList);
     }
     public JsonResult addOrUpdate(String params) {
         Leave m = JSON.toJavaObject(JSON.parseObject(params),Leave.class);
